@@ -79,7 +79,8 @@
 }
 
 .submit-btn:hover:not(:disabled) {
-  opacity: 0.8;
+  background: #222;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .submit-btn:disabled {

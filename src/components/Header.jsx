@@ -1,12 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import '../styles/Header.css';
 
 const Header = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
+    navigate('/');
   };
 
   return (
@@ -25,13 +27,23 @@ const Header = () => {
           </Link>
           
           {!user ? (
-            <Link to="/register" className="nav-link nav-link-primary">
-              Регистрация
-            </Link>
+            <div className="auth-buttons">
+              <Link to="/login" className="nav-link nav-link-secondary">
+                Вход
+              </Link>
+              <Link to="/register" className="nav-link nav-link-primary">
+                Регистрация
+              </Link>
+            </div>
           ) : (
-            <button className="logout-btn" onClick={handleLogout}>
-              Выход
-            </button>
+            <div className="user-menu">
+              <Link to="/profile" className="nav-link user-profile-link">
+                {user.firstName}
+              </Link>
+              <button className="logout-btn" onClick={handleLogout}>
+                Выход
+              </button>
+            </div>
           )}
         </nav>
       </div>

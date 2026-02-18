@@ -38,22 +38,28 @@
 }
 
 .nav-link-primary {
-  background: #ff6b6b;
+  background: #222;
   padding: 8px 16px;
   border-radius: 4px;
+  font-weight: 500;
+}
+
+.nav-link-primary:hover {
+  background: #000;
 }
 
 .logout-btn {
-  background: #ff6b6b;
+  background: #222;
   color: white;
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .logout-btn:hover {
-  opacity: 0.9;
+  background: #000;
 } 
     

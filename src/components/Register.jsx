@@ -84,7 +84,7 @@ const RegistrationForm = () => {
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      await register(formData.email, formData.password, formData.firstName, formData.lastName);
+      register(formData.email, formData.password, formData.firstName, formData.lastName);
 
       setSuccessMessage('Регистрация прошла успешно! Перенаправление...');
       setFormData({
@@ -96,10 +96,10 @@ const RegistrationForm = () => {
       });
 
       setTimeout(() => {
-        navigate('/');
+        navigate('/profile');
       }, 2000);
     } catch (error) {
-      setErrors({ submit: 'Ошибка при регистрации. Попробуйте снова.' });
+      setErrors({ submit: error.message || 'Ошибка при регистрации. Попробуйте снова.' });
     } finally {
       setIsSubmitting(false);
     }

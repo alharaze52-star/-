@@ -110,9 +110,9 @@ const ComicConTickets = () => {
     <div className="comic-con-container">
       <section className="comic-con-hero">
         <div className="hero-content">
-          <h2>🎭 Comic Con Astana 2026</h2>
+          <h2>Comic Con Astana 2026</h2>
           <p>Самое крупное событие поп-культуры в Казахстане</p>
-          <p className="event-date">📅 5-9 августа 2026 | 📍 Astana Arena</p>
+          <p className="event-date">5-9 августа 2026 | Astana Arena</p>
         </div>
       </section>
 
@@ -128,7 +128,7 @@ const ComicConTickets = () => {
               <p className="ticket-description">{ticket.description}</p>
               <ul className="features-list">
                 {ticket.features.map((feature, idx) => (
-                  <li key={idx}>✓ {feature}</li>
+                  <li key={idx}>{feature}</li>
                 ))}
               </ul>
               <button 
@@ -147,7 +147,7 @@ const ComicConTickets = () => {
           className="cart-toggle-btn"
           onClick={() => setShowCart(!showCart)}
         >
-          🛒 Корзина ({cart.length})
+          Корзина ({cart.length})
         </button>
       </div>
 
@@ -221,7 +221,7 @@ const ComicConTickets = () => {
 
               {orderPlaced && (
                 <div className="success-message">
-                  ✓ Заказ успешно размещен! Проверьте вашу электронную почту для подтверждения.
+                  Заказ успешно размещен! Проверьте вашу электронную почту для подтверждения.
                 </div>
               )}
             </>
