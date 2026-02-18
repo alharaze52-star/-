@@ -42,7 +42,7 @@ const About = () => {
     <div className="about-container">
       {/* Hero */}
       <section className="about-hero">
-        <h1>О EventTickets</h1>
+        <h1>О Comic Con</h1>
         <p>Платформа для поиска и покупки билетов на мероприятия</p>
       </section>
 
@@ -50,7 +50,7 @@ const About = () => {
       <section className="about-section">
         <h2>Наша миссия</h2>
         <p>
-          EventTickets создана для того, чтобы сделать процесс покупки билетов максимально удобным. 
+          Comic Con создана для того, чтобы сделать процесс покупки билетов максимально удобным. 
           Мы помогаем людям найти и приобрести билеты на интересующие их мероприятия.
         </p>
       </section>
@@ -124,7 +124,7 @@ const About = () => {
       {/* Contact */}
       <section className="about-section about-contact">
         <h2>Контакты</h2>
-        <p>Email: info@eventtickets.com</p>
+        <p>Email: info@comiccon.kz</p>
         <p>Телефон:</p>
         <p>Адрес: </p>
       </section>

@@ -9,9 +9,9 @@ const Footer = () => {
       fontSize: '14px',
       color: '#666'
     }}>
-      <p>&copy; 2026 EventTickets. Все права защищены.</p>
+      <p>&copy; 2026 Comic Con. Все права защищены.</p>
       <p style={{ fontSize: '12px', opacity: 0.8 }}>
-        Email: info@eventtickets.com
+        Email: info@comiccon.kz
       </p>
     </footer>
   );

@@ -13,7 +13,7 @@ const Header = () => {
     <header className="header">
       <div className="header-container">
         <Link to="/" className="logo">
-          EventTickets
+          Comic Con
         </Link>
 
         <nav className="nav">
