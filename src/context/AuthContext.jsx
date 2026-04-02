@@ -1,13 +1,13 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
+const API_BASE_URL = 'http://localhost:5000/api';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
 
-  // Инициализация из localStorage при загрузке
   useEffect(() => {
     const savedUser = localStorage.getItem('currentUser');
     const savedUsers = localStorage.getItem('allUsers');
@@ -57,6 +57,34 @@ export const AuthProvider = ({ children }) => {
     login(updatedUser);
   };
 
+  const uploadAvatar = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        try {
+          const avatarData = e.target.result;
+          const updatedUser = { ...user, avatar: avatarData };
+          
+          const updatedUsers = users.map(u => u.id === user.id ? updatedUser : u);
+          setUsers(updatedUsers);
+          localStorage.setItem('allUsers', JSON.stringify(updatedUsers));
+          
+          login(updatedUser);
+          resolve(updatedUser);
+        } catch (error) {
+          reject(error);
+        }
+      };
+      
+      reader.onerror = () => {
+        reject(new Error('Ошибка при чтении файла'));
+      };
+      
+      reader.readAsDataURL(file);
+    });
+  };
+
   const userExists = (email) => {
     return users.some(u => u.email === email);
   };
@@ -71,6 +99,7 @@ export const AuthProvider = ({ children }) => {
     isLoading,
     setIsLoading,
     updateUserProfile,
+    uploadAvatar,
     userExists,
   };
 

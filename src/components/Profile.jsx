@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import './Profile.css';
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { user, logout, updateUserProfile } = useAuth();
+  const { user, logout, updateUserProfile, uploadAvatar } = useAuth();
+  const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState('');
   const [editData, setEditData] = useState({
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
@@ -106,6 +109,42 @@ const Profile = () => {
     navigate('/');
   };
 
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleAvatarChange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (!validTypes.includes(file.type)) {
+      setAvatarError('Только изображения допускаются (JPEG, PNG, WebP, GIF)');
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarError('Размер файла не должен превышать 5 МБ');
+      return;
+    }
+
+    setAvatarError('');
+    setIsUploadingAvatar(true);
+
+    try {
+      await uploadAvatar(file);
+      setSuccessMessage('Аватар успешно загружен!');
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      setAvatarError(error.message || 'Ошибка при загрузке аватара');
+    } finally {
+      setIsUploadingAvatar(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
@@ -120,16 +159,56 @@ const Profile = () => {
     <div className="profile-container">
       <div className="profile-card">
         <div className="profile-header">
-          <div className="profile-avatar">
-            {user?.firstName?.charAt(0).toUpperCase()}
-            {user?.lastName?.charAt(0).toUpperCase()}
+          <div 
+            className="profile-avatar" 
+            onClick={handleAvatarClick}
+            style={{ cursor: 'pointer', position: 'relative' }}
+          >
+            {user?.avatar ? (
+              <>
+                <img 
+                  src={user.avatar} 
+                  alt={`${user.firstName} ${user.lastName}`}
+                  style={{ width: '100%', height: '100%', borderRadius: 'inherit', objectFit: 'cover' }}
+                />
+                {isUploadingAvatar && <div className="upload-overlay">Загрузка...</div>}
+              </>
+            ) : (
+              <>
+                {user?.firstName?.charAt(0).toUpperCase()}
+                {user?.lastName?.charAt(0).toUpperCase()}
+              </>
+            )}
           </div>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleAvatarChange}
+            style={{ display: 'none' }}
+          />
           <div className="profile-info-header">
             <h1 className="profile-name">{user?.firstName} {user?.lastName}</h1>
             <p className="profile-email">{user?.email}</p>
             <p className="profile-role">Тип аккаунта: <strong>{user?.role === 'admin' ? 'Администратор' : 'Обычный пользователь'}</strong></p>
           </div>
         </div>
+
+        {avatarError && (
+          <div style={{ 
+            color: '#dc3545', 
+            backgroundColor: '#f8d7da', 
+            padding: '0.75rem 1rem',
+            marginBottom: '1rem',
+            border: '1px solid #f5c6cb',
+            borderRadius: '0.5rem',
+            marginLeft: '1.5rem',
+            marginRight: '1.5rem',
+            marginTop: '1.5rem'
+          }}>
+            {avatarError}
+          </div>
+        )}
 
         {successMessage && (
           <div className="success-message">
